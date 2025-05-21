@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro'yxatdan o'tish - Kompyuter Ustaxonasi</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 3rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Auth Form */
+        .auth-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            padding: 2rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: #7f8c8d;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group .input-error {
+            border-color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .auth-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        .auth-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #7f8c8d;
+        }
+
+        .auth-footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms input {
+            margin-right: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .terms label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .terms a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .role-selection {
+            margin-bottom: 1.5rem;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .role-option {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option:hover {
+            border-color: #3498db;
+        }
+
+        .role-option.selected {
+            border-color: #3498db;
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .role-option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .role-option-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .role-option-desc {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: #2980b9;
+        }
+
+        .copyright {
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .auth-container {
+                width: 90%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .role-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+                <button class="mobile-menu-btn">☰</button>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="/">Bosh sahifa</a></li>
+                        <li><a href="/#services">Xizmatlar</a></li>
+                        <li><a href="/#about">Biz haqimizda</a></li>
+                        <li><a href="/#testimonials">Mijozlar fikri</a></li>
+                        <li><a href="/#contact">Bog'lanish</a></li>
+                        <li><a href="/murojat">Murojat qoldirish</a></li>
+                        <li><a href="/login">Kirish</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>Ro'yxatdan o'tish</h1>
+                <p>Yangi hisob yaratish uchun ma'lumotlaringizni kiriting</p>
+            </div>
+            <form id="registerForm" method="post" action="/register">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">Ism *</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                        {% if errors and errors.first_name %}
+                        <div class="error-message">{{ errors.first_name }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Familiya *</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                        {% if errors and errors.last_name %}
+                        <div class="error-message">{{ errors.last_name }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                    {% if errors and errors.email %}
+                    <div class="error-message">{{ errors.email }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon raqami *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+998 XX XXX XX XX" required>
+                    {% if errors and errors.phone %}
+                    <div class="error-message">{{ errors.phone }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Parol *</label>
+                        <input type="password" id="password" name="password" required>
+                        {% if errors and errors.password %}
+                        <div class="error-message">{{ errors.password }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Parolni tasdiqlash *</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        {% if errors and errors.confirm_password %}
+                        <div class="error-message">{{ errors.confirm_password }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="role-selection">
+                    <label>Foydalanuvchi turi *</label>
+                    <div class="role-options">
+                        <div class="role-option selected" data-role="user">
+                            <div class="role-option-icon">👤</div>
+                            <div class="role-option-title">Mijoz</div>
+                            <div class="role-option-desc">Xizmatlardan foydalanish uchun</div>
+                        </div>
+                        <div class="role-option" data-role="mechanic">
+                            <div class="role-option-icon">🔧</div>
+                            <div class="role-option-title">Texnik</div>
+                            <div class="role-option-desc">Ta'mirlash ishlari uchun</div>
+                        </div>
+                        <div class="role-option" data-role="manager">
+                            <div class="role-option-icon">📊</div>
+                            <div class="role-option-title">Manager</div>
+                            <div class="role-option-desc">Boshqaruv uchun</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="role" name="role" value="user">
+                    {% if errors and errors.role %}
+                    <div class="error-message">{{ errors.role }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">Men <a href="#">foydalanish shartlari</a> va <a href="#">maxfiylik siyosati</a> bilan tanishdim va roziman</label>
+                </div>
+                {% if errors and errors.terms %}
+                <div class="error-message">{{ errors.terms }}</div>
+                {% endif %}
+
+                <button type="submit" class="auth-btn">Ro'yxatdan o'tish</button>
+                <div class="auth-footer">
+                    <p>Hisobingiz bormi? <a href="/login">Kirish</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="/" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+                <div class="social-links">
+                    <a href="#" class="social-link">FB</a>
+                    <a href="#" class="social-link">TG</a>
+                    <a href="#" class="social-link">IG</a>
+                    <a href="#" class="social-link">YT</a>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 Kompyuter Ustaxonasi. Barcha huquqlar himoyalangan.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Role selection
+        const roleOptions = document.querySelectorAll('.role-option');
+        const roleInput = document.getElementById('role');
+
+        roleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+
+                // Add selected class to clicked option
+                this.classList.add('selected');
+
+                // Update hidden input value
+                roleInput.value = this.getAttribute('data-role');
+            });
+        });
+    </script>
+</body>
+</html>

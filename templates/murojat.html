@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murojat Qoldirish - Kompyuter Ustaxonasi</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Page Title */
+        .page-title {
+            background-color: #3498db;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 4rem 0;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-title h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-title p {
+            color: #7f8c8d;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .file-input {
+            margin-top: 0.5rem;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .file-input-label:hover {
+            background-color: #e1e1e1;
+        }
+
+        .file-input-info {
+            display: block;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: #2980b9;
+        }
+
+        .copyright {
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .page-title p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background-color: #2ecc71;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+                <button class="mobile-menu-btn">☰</button>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="index.html">Bosh sahifa</a></li>
+                        <li><a href="index.html#services">Xizmatlar</a></li>
+                        <li><a href="index.html#about">Biz haqimizda</a></li>
+                        <li><a href="index.html#testimonials">Mijozlar fikri</a></li>
+                        <li><a href="index.html#contact">Bog'lanish</a></li>
+                        <li><a href="murojat.html">Murojat qoldirish</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <div class="container">
+            <h1>Murojat qoldirish</h1>
+            <p>Qurilmangiz bilan bog'liq muammolarni bizga yuboring va biz tez orada yordam beramiz</p>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="success-message" id="successMessage">
+                <h3>Murojaatingiz muvaffaqiyatli yuborildi!</h3>
+                <p>Tez orada siz bilan bog'lanamiz.</p>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-title">
+                    <h2>Ta'mirlash uchun murojat</h2>
+                    <p>Iltimos, qurilmangiz va muammo haqida batafsil ma'lumot bering</p>
+                </div>
+                
+                <form id="repairForm">
+                    <!-- Personal Information -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">To'liq ismingiz *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                            <div class="error-message" id="fullNameError">Iltimos, ismingizni kiriting</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telefon raqamingiz *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+998 XX XXX XX XX" required>
+                            <div class="error-message" id="phoneError">Iltimos, telefon raqamingizni kiriting</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email (ixtiyoriy)</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <!-- Device Information -->
+                    <div class="form-group">
+                        <label for="deviceType">Qurilma turi *</label>
+                        <select id="deviceType" name="deviceType" required>
+                            <option value="">Tanlang</option>
+                            <option value="laptop">Noutbuk</option>
+                            <option value="desktop">Stol kompyuteri</option>
+                            <option value="tablet">Planshet</option>
+                            <option value="phone">Telefon</option>
+                            <option value="printer">Printer</option>
+                            <option value="other">Boshqa</option>
+                        </select>
+                        <div class="error-message" id="deviceTypeError">Iltimos, qurilma turini tanlang</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="brand">Brend/Model</label>
+                            <input type="text" id="brand" name="brand" placeholder="Masalan: Acer Aspire 5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="purchaseYear">Sotib olingan yil (taxminiy)</label>
+                            <input type="number" id="purchaseYear" name="purchaseYear" min="1990" max="2023">
+                        </div>
+                    </div>
+                    
+                    <!-- Problem Description -->
+                    <div class="form-group">
+                        <label for="problemDescription">Muammo tavsifi *</label>
+                        <textarea id="problemDescription" name="problemDescription" placeholder="Qurilmangiz bilan qanday muammo yuz berdi? Iloji boricha batafsil yozing." required></textarea>
+                        <div class="error-message" id="problemDescriptionError">Iltimos, muammoni tasvirlang</div>
+                    </div>
+                    
+                    <!-- Problem Symptoms -->
+                    <div class="form-group">
+                        <label>Muammo belgilari (tegishli barcha variantlarni tanlang)</label>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom1" name="symptoms" value="wont_turn_on">
+                            <label for="symptom1">Yoqilmayapti</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom2" name="symptoms" value="slow_performance">
+                            <label for="symptom2">Sekin ishlayapti</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom3" name="symptoms" value="overheating">
+                            <label for="symptom3">Qizib ketadi</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom4" name="symptoms" value="screen_issues">
+                            <label for="symptom4">Ekran muammolari</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom5" name="symptoms" value="keyboard_issues">
+                            <label for="symptom5">Klaviatura muammolari</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom6" name="symptoms" value="battery_issues">
+                            <label for="symptom6">Batareya muammolari</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom7" name="symptoms" value="software_issues">
+                            <label for="symptom7">Dasturiy ta'minot muammolari</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom8" name="symptoms" value="internet_issues">
+                            <label for="symptom8">Internet muammolari</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom9" name="symptoms" value="strange_noises">
+                            <label for="symptom9">G'alati shovqinlar</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symptom10" name="symptoms" value="other">
+                            <label for="symptom10">Boshqa</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Photos -->
+                    <div class="form-group">
+                        <label for="devicePhotos">Qurilma rasmlari (ixtiyoriy)</label>
+                        <input type="file" id="devicePhotos" name="devicePhotos" accept="image/*" multiple class="file-input" style="display: none;">
+                        <label for="devicePhotos" class="file-input-label">Rasmlarni tanlash</label>
+                        <span class="file-input-info">Muammoni ko'rsatadigan rasmlarni yuklang (maksimal 3 ta rasm)</span>
+                        <div id="selectedFiles"></div>
+                    </div>
+                    
+                    <!-- Urgency -->
+                    <div class="form-group">
+                        <label for="urgency">Shoshilinchlik darajasi</label>
+                        <select id="urgency" name="urgency">
+                            <option value="normal">Normal - 3-5 kun ichida</option>
+                            <option value="high">Yuqori - 1-2 kun ichida</option>
+                            <option value="urgent">Juda shoshilinch - imkon qadar tezroq</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Preferred Contact Method -->
+                    <div class="form-group">
+                        <label>Afzal ko'rilgan aloqa usuli</label>
+                        
+                        <div class="checkbox-group">
+                            <input type="radio" id="contactPhone" name="contactMethod" value="phone" checked>
+                            <label for="contactPhone">Telefon</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="radio" id="contactSMS" name="contactMethod" value="sms">
+                            <label for="contactSMS">SMS</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="radio" id="contactEmail" name="contactMethod" value="email">
+                            <label for="contactEmail">Email</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Notes -->
+                    <div class="form-group">
+                        <label for="additionalNotes">Qo'shimcha ma'lumotlar (ixtiyoriy)</label>
+                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Boshqa muhim ma'lumotlar bo'lsa, shu yerda yozing"></textarea>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Murojaatni yuborish</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="index.html" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+                <div class="social-links">
+                    <a href="#" class="social-link">FB</a>
+                    <a href="#" class="social-link">TG</a>
+                    <a href="#" class="social-link">IG</a>
+                    <a href="#" class="social-link">YT</a>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 Kompyuter Ustaxonasi. Barcha huquqlar himoyalangan.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Form validation and submission
+        const repairForm = document.getElementById('repairForm');
+        const successMessage = document.getElementById('successMessage');
+        
+        // File input handling
+        const devicePhotos = document.getElementById('devicePhotos');
+        const selectedFiles = document.getElementById('selectedFiles');
+        
+        devicePhotos.addEventListener('change', function() {
+            selectedFiles.innerHTML = '';
+            
+            if (this.files.length > 3) {
+                alert('Iltimos, maksimal 3 ta rasm tanlang');
+                this.value = '';
+                return;
+            }
+            
+            for (let i = 0; i < this.files.length; i++) {
+                const file = this.files[i];
+                const fileInfo = document.createElement('div');
+                fileInfo.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+                selectedFiles.appendChild(fileInfo);
+            }
+        });
+        
+        // Form submission
+        repairForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(msg => msg.classList.remove('show'));
+            
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => input.classList.remove('input-error'));
+            
+            // Validate required fields
+            let isValid = true;
+            
+            const fullName = document.getElementById('fullName');
+            if (!fullName.value.trim()) {
+                document.getElementById('fullNameError').classList.add('show');
+                fullName.classList.add('input-error');
+                isValid = false;
+            }
+            
+            const phone = document.getElementById('phone');
+            if (!phone.value.trim()) {
+                document.getElementById('phoneError').classList.add('show');
+                phone.classList.add('input-error');
+                isValid = false;
+            }
+            
+            const deviceType = document.getElementById('deviceType');
+            if (!deviceType.value) {
+                document.getElementById('deviceTypeError').classList.add('show');
+                deviceType.classList.add('input-error');
+                isValid = false;
+            }
+            
+            const problemDescription = document.getElementById('problemDescription');
+            if (!problemDescription.value.trim()) {
+                document.getElementById('problemDescriptionError').classList.add('show');
+                problemDescription.classList.add('input-error');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // In a real application, you would send the form data to a server here
+                // For this example, we'll just show the success message
+                
+                // Hide the form and show success message
+                repairForm.reset();
+                successMessage.classList.add('show');
+                
+                // Scroll to the success message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                // Hide success message after 5 seconds and reset form
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 5000);
+            } else {
+                // Scroll to the first error
+                const firstError = document.querySelector('.input-error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

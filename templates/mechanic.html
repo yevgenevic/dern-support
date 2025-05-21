@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mexanik Dashboard - Kompyuter Ustaxonasi</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Container */
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #2c3e50;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem 0;
+            height: calc(100vh - 70px);
+            position: sticky;
+            top: 70px;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: #3498db;
+        }
+
+        .sidebar-menu a i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .page-title {
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: #7f8c8d;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card-title {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-info {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: auto;
+        }
+
+        .stat-card.primary {
+            border-top: 4px solid #3498db;
+        }
+
+        .stat-card.success {
+            border-top: 4px solid #2ecc71;
+        }
+
+        .stat-card.warning {
+            border-top: 4px solid #f39c12;
+        }
+
+        .stat-card.danger {
+            border-top: 4px solid #e74c3c;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s;
+        }
+
+        .tab-button:hover {
+            color: #3498db;
+        }
+
+        .tab-button.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1.5rem 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .status-approved {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .status-rejected {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .status-completed {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .status-in-progress {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-start {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: #8e44ad;
+        }
+
+        .btn-complete {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-parts {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-parts:hover {
+            background-color: #e67e22;
+        }
+
+        /* Search and Filter */
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 0.3rem 0;
+        }
+
+        .search-box i {
+            color: #7f8c8d;
+            margin-right: 0.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Request Details */
+        .request-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .detail-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        .detail-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Parts Request Section */
+        .parts-request {
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .parts-request h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .parts-list {
+            margin-bottom: 1.5rem;
+        }
+
+        .part-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .part-name {
+            flex: 1;
+        }
+
+        .part-quantity {
+            width: 80px;
+            margin: 0 1rem;
+        }
+
+        .part-remove {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .add-part {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-part select, .add-part input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .add-part select {
+            flex: 1;
+        }
+
+        .add-part input {
+            width: 80px;
+        }
+
+        .add-part-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Repair Notes */
+        .repair-notes {
+            margin-top: 1.5rem;
+        }
+
+        .repair-notes textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        /* Task Card */
+        .task-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .task-card-header {
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-card-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .task-card-subtitle {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .task-card-body {
+            padding: 1rem;
+        }
+
+        .task-card-info {
+            margin-bottom: 1rem;
+        }
+
+        .task-card-info-item {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-card-info-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            width: 120px;
+            font-size: 0.9rem;
+        }
+
+        .task-card-info-value {
+            color: #2c3e50;
+        }
+
+        .task-card-description {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+
+        .task-card-footer {
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-card-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .sidebar-menu li {
+                margin-right: 0.5rem;
+            }
+
+            .request-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .task-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Icons */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-dashboard {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z' /%3E%3C/svg%3E");
+        }
+
+        .icon-tasks {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' /%3E%3C/svg%3E");
+        }
+
+        .icon-inventory {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' /%3E%3C/svg%3E");
+        }
+
+        .icon-history {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' /%3E%3C/svg%3E");
+        }
+
+        .icon-search {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237f8c8d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="/" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+            <div class="user-info">
+                <div class="user-avatar">T</div>
+                <span>Texnik</span>
+                <button class="logout-btn">Chiqish</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Dashboard -->
+<div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" data-tab="dashboard"><span class="icon icon-dashboard"></span> Dashboard</a>
+            </li>
+            <li><a href="#" data-tab="tasks"><span class="icon icon-tasks"></span> Vazifalar</a></li>
+            <li><a href="#" data-tab="inventory"><span class="icon icon-inventory"></span> Omborxona</a></li>
+            <li><a href="#" data-tab="history"><span class="icon icon-history"></span> Tarix</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="page-title">
+                <h1>Texnik Dashboard</h1>
+                <p>Sizning joriy vazifalaringiz va statistika</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-card-title">Jami vazifalar</div>
+                    <div class="stat-card-value">24</div>
+                    <div class="stat-card-info">Oxirgi 30 kun: +8</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-card-title">Jarayonda</div>
+                    <div class="stat-card-value">5</div>
+                    <div class="stat-card-info">Oxirgi 30 kun: +2</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-card-title">Tugatilgan</div>
+                    <div class="stat-card-value">19</div>
+                    <div class="stat-card-info">Oxirgi 30 kun: +6</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="stat-card-title">Kutilmoqda</div>
+                    <div class="stat-card-value">3</div>
+                    <div class="stat-card-info">Oxirgi 30 kun: +1</div>
+                </div>
+            </div>
+
+            <!-- Current Tasks -->
+            <div class="page-title">
+                <h1>Joriy vazifalar</h1>
+            </div>
+
+            <div class="task-cards">
+                <div class="task-card">
+                    <div class="task-card-header">
+                        <div class="task-card-title">Noutbuk ta'mirlash #1244</div>
+                        <div class="task-card-subtitle">Malika Saidova</div>
+                    </div>
+                    <div class="task-card-body">
+                        <div class="task-card-info">
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qurilma:</div>
+                                <div class="task-card-info-value">Acer Aspire 5</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qabul qilingan:</div>
+                                <div class="task-card-info-value">11.05.2023</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Holat:</div>
+                                <div class="task-card-info-value"><span class="status-badge status-in-progress">Jarayonda</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-card-description">
+                            <strong>Muammo:</strong> Noutbuk qizib ketadi va to'satdan o'chib qoladi. Batareya tez
+                            tugaydi.
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="task-card-footer">
+                        <div class="task-card-status">Jarayon: 60%</div>
+                        <button class="btn btn-view" onclick="openTaskModal('1244')">Batafsil</button>
+                    </div>
+                </div>
+
+                <div class="task-card">
+                    <div class="task-card-header">
+                        <div class="task-card-title">Kompyuter ta'mirlash #1240</div>
+                        <div class="task-card-subtitle">Jahongir Qodirov</div>
+                    </div>
+                    <div class="task-card-body">
+                        <div class="task-card-info">
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qurilma:</div>
+                                <div class="task-card-info-value">HP Pavilion</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qabul qilingan:</div>
+                                <div class="task-card-info-value">07.05.2023</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Holat:</div>
+                                <div class="task-card-info-value"><span class="status-badge status-in-progress">Jarayonda</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-card-description">
+                            <strong>Muammo:</strong> Kompyuter juda sekin ishlayapti, dasturlar ochilishida muammo bor.
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="task-card-footer">
+                        <div class="task-card-status">Jarayon: 80%</div>
+                        <button class="btn btn-view" onclick="openTaskModal('1240')">Batafsil</button>
+                    </div>
+                </div>
+
+                <div class="task-card">
+                    <div class="task-card-header">
+                        <div class="task-card-title">Printer ta'mirlash #1245</div>
+                        <div class="task-card-subtitle">Aziz Karimov</div>
+                    </div>
+                    <div class="task-card-body">
+                        <div class="task-card-info">
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qurilma:</div>
+                                <div class="task-card-info-value">HP LaserJet Pro</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Qabul qilingan:</div>
+                                <div class="task-card-info-value">12.05.2023</div>
+                            </div>
+                            <div class="task-card-info-item">
+                                <div class="task-card-info-label">Holat:</div>
+                                <div class="task-card-info-value"><span
+                                        class="status-badge status-approved">Yangi</span></div>
+                            </div>
+                        </div>
+                        <div class="task-card-description">
+                            <strong>Muammo:</strong> Printer chop etmayapti, xato haqida xabar bermoqda.
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="task-card-footer">
+                        <div class="task-card-status">Jarayon: 0%</div>
+                        <button class="btn btn-start" onclick="startTask('1245')">Boshlash</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Tasks -->
+            <div class="page-title">
+                <h1>Yangi vazifalar</h1>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mijoz</th>
+                    <th>Qurilma</th>
+                    <th>Muammo</th>
+                    <th>Qabul qilingan</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#1245</td>
+                    <td>Aziz Karimov</td>
+                    <td>Printer - HP LaserJet Pro</td>
+                    <td>Printer chop etmayapti</td>
+                    <td>12.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1245')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1245')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1246</td>
+                    <td>Sardor Alimov</td>
+                    <td>Noutbuk - Dell XPS</td>
+                    <td>Ekran yorilgan</td>
+                    <td>13.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1246')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1246')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1247</td>
+                    <td>Kamola Yusupova</td>
+                    <td>Stol kompyuteri</td>
+                    <td>Ishga tushmayapti</td>
+                    <td>14.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1247')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1247')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tasks Tab -->
+        <div class="tab-content" id="tasks">
+            <div class="page-title">
+                <h1>Vazifalar</h1>
+                <p>Barcha joriy va yangi vazifalar</p>
+            </div>
+
+            <!-- Tabs for Task Status -->
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-task-tab="all">Barchasi</button>
+                    <button class="tab-button" data-task-tab="new">Yangi</button>
+                    <button class="tab-button" data-task-tab="in-progress">Jarayonda</button>
+                    <button class="tab-button" data-task-tab="completed">Tugatilgan</button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="table-actions">
+                <div class="search-box">
+                    <span class="icon icon-search"></span>
+                    <input type="text" placeholder="Vazifalarni qidirish...">
+                </div>
+            </div>
+
+            <!-- Tasks Table -->
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mijoz</th>
+                    <th>Qurilma</th>
+                    <th>Muammo</th>
+                    <th>Qabul qilingan</th>
+                    <th>Holat</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#1244</td>
+                    <td>Malika Saidova</td>
+                    <td>Noutbuk - Acer Aspire 5</td>
+                    <td>Qizib ketadi, o'chib qoladi</td>
+                    <td>11.05.2023</td>
+                    <td><span class="status-badge status-in-progress">Jarayonda</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1244')">Ko'rish</button>
+                            <button class="btn btn-complete" onclick="completeTask('1244')">Tugatish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1240</td>
+                    <td>Jahongir Qodirov</td>
+                    <td>Noutbuk - HP Pavilion</td>
+                    <td>Sekin ishlayapti</td>
+                    <td>07.05.2023</td>
+                    <td><span class="status-badge status-in-progress">Jarayonda</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1240')">Ko'rish</button>
+                            <button class="btn btn-complete" onclick="completeTask('1240')">Tugatish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1245</td>
+                    <td>Aziz Karimov</td>
+                    <td>Printer - HP LaserJet Pro</td>
+                    <td>Printer chop etmayapti</td>
+                    <td>12.05.2023</td>
+                    <td><span class="status-badge status-approved">Yangi</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1245')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1245')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1246</td>
+                    <td>Sardor Alimov</td>
+                    <td>Noutbuk - Dell XPS</td>
+                    <td>Ekran yorilgan</td>
+                    <td>13.05.2023</td>
+                    <td><span class="status-badge status-approved">Yangi</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1246')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1246')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1247</td>
+                    <td>Kamola Yusupova</td>
+                    <td>Stol kompyuteri</td>
+                    <td>Ishga tushmayapti</td>
+                    <td>14.05.2023</td>
+                    <td><span class="status-badge status-approved">Yangi</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1247')">Ko'rish</button>
+                            <button class="btn btn-start" onclick="startTask('1247')">Boshlash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1243</td>
+                    <td>Bobur Aliyev</td>
+                    <td>Printer - HP LaserJet</td>
+                    <td>Siyoh muammosi</td>
+                    <td>10.05.2023</td>
+                    <td><span class="status-badge status-completed">Tugatilgan</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1243')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1241</td>
+                    <td>Gulnora Rahimova</td>
+                    <td>Planshet - Samsung Galaxy Tab</td>
+                    <td>Ekran singan</td>
+                    <td>08.05.2023</td>
+                    <td><span class="status-badge status-completed">Tugatilgan</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1241')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1239</td>
+                    <td>Nilufar Karimova</td>
+                    <td>Telefon - iPhone 12</td>
+                    <td>Batareya muammosi</td>
+                    <td>06.05.2023</td>
+                    <td><span class="status-badge status-completed">Tugatilgan</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1239')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Inventory Tab -->
+        <div class="tab-content" id="inventory">
+            <div class="page-title">
+                <h1>Omborxona</h1>
+                <p>Mavjud detallar va ehtiyot qismlar</p>
+            </div>
+
+            <div class="table-actions">
+                <div class="search-box">
+                    <span class="icon icon-search"></span>
+                    <input type="text" placeholder="Detallarni qidirish...">
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nomi</th>
+                    <th>Kategoriya</th>
+                    <th>Miqdori</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#P001</td>
+                    <td>Intel Core i5-10400</td>
+                    <td>Protsessorlar</td>
+                    <td>12</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('P001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#P002</td>
+                    <td>AMD Ryzen 5 5600X</td>
+                    <td>Protsessorlar</td>
+                    <td>8</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('P002')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#R001</td>
+                    <td>Kingston 8GB DDR4</td>
+                    <td>Xotira (RAM)</td>
+                    <td>20</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('R001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#R002</td>
+                    <td>Crucial 16GB DDR4</td>
+                    <td>Xotira (RAM)</td>
+                    <td>5</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('R002')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#H001</td>
+                    <td>Samsung 500GB SSD</td>
+                    <td>Qattiq disklar</td>
+                    <td>15</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('H001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#H002</td>
+                    <td>WD 1TB HDD</td>
+                    <td>Qattiq disklar</td>
+                    <td>3</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('H002')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#V001</td>
+                    <td>NVIDIA GTX 1650</td>
+                    <td>Videokartalar</td>
+                    <td>2</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('V001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#M001</td>
+                    <td>ASUS Prime B450M-A</td>
+                    <td>Ona plata</td>
+                    <td>7</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('M001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#D001</td>
+                    <td>15.6" FHD IPS Ekran</td>
+                    <td>Ekranlar</td>
+                    <td>10</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('D001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#K001</td>
+                    <td>Noutbuk klaviaturasi (Universal)</td>
+                    <td>Klaviaturalar</td>
+                    <td>25</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-parts" onclick="requestPart('K001')">So'rash</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- History Tab -->
+        <div class="tab-content" id="history">
+            <div class="page-title">
+                <h1>Tarix</h1>
+                <p>Tugatilgan ta'mirlash ishlari tarixi</p>
+            </div>
+
+            <div class="table-actions">
+                <div class="search-box">
+                    <span class="icon icon-search"></span>
+                    <input type="text" placeholder="Tarixni qidirish...">
+                </div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mijoz</th>
+                    <th>Qurilma</th>
+                    <th>Muammo</th>
+                    <th>Boshlangan</th>
+                    <th>Tugatilgan</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#1243</td>
+                    <td>Bobur Aliyev</td>
+                    <td>Printer - HP LaserJet</td>
+                    <td>Siyoh muammosi</td>
+                    <td>10.05.2023</td>
+                    <td>11.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1243')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1241</td>
+                    <td>Gulnora Rahimova</td>
+                    <td>Planshet - Samsung Galaxy Tab</td>
+                    <td>Ekran singan</td>
+                    <td>08.05.2023</td>
+                    <td>10.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1241')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1239</td>
+                    <td>Nilufar Karimova</td>
+                    <td>Telefon - iPhone 12</td>
+                    <td>Batareya muammosi</td>
+                    <td>06.05.2023</td>
+                    <td>07.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1239')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1238</td>
+                    <td>Rustam Zokirov</td>
+                    <td>Stol kompyuteri</td>
+                    <td>Ishga tushmayapti</td>
+                    <td>05.05.2023</td>
+                    <td>06.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1238')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1236</td>
+                    <td>Akmal Yusupov</td>
+                    <td>Printer - Epson L3150</td>
+                    <td>Qog'oz tiqilib qolgan</td>
+                    <td>03.05.2023</td>
+                    <td>04.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1236')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1235</td>
+                    <td>Lola Karimova</td>
+                    <td>Noutbuk - Lenovo IdeaPad</td>
+                    <td>Klaviatura ishlamayapti</td>
+                    <td>02.05.2023</td>
+                    <td>03.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1235')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#1234</td>
+                    <td>Timur Azimov</td>
+                    <td>Stol kompyuteri</td>
+                    <td>Videokarta muammosi</td>
+                    <td>01.05.2023</td>
+                    <td>03.05.2023</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-view" onclick="openTaskModal('1234')">Ko'rish</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Task Details Modal -->
+<div class="modal" id="taskModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Vazifa #1244 - Tafsilotlar</h2>
+            <button class="modal-close" id="closeTaskModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="request-details">
+                <!-- Client Information -->
+                <div class="detail-group">
+                    <div class="detail-label">Mijoz</div>
+                    <div class="detail-value">Malika Saidova</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Telefon</div>
+                    <div class="detail-value">+998 90 123 45 67</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">malika@example.com</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Qabul qilingan</div>
+                    <div class="detail-value">11.05.2023</div>
+                </div>
+
+                <!-- Device Information -->
+                <div class="detail-group">
+                    <div class="detail-label">Qurilma turi</div>
+                    <div class="detail-value">Noutbuk</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Model</div>
+                    <div class="detail-value">Acer Aspire 5</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Sotib olingan yil</div>
+                    <div class="detail-value">2020</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Holat</div>
+                    <div class="detail-value"><span class="status-badge status-in-progress">Jarayonda</span></div>
+                </div>
+
+                <!-- Problem Description -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Muammo tavsifi</div>
+                    <div class="detail-value">
+                        Noutbuk juda qizib ketadi va to'satdan o'chib qoladi. Batareya tez tugaydi. Ventilyator juda
+                        shovqin chiqaradi. Muammo taxminan 2 hafta oldin boshlangan.
+                    </div>
+                </div>
+
+                <!-- Problem Symptoms -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Muammo belgilari</div>
+                    <div class="detail-value">
+                        <ul style="padding-left: 20px;">
+                            <li>Qizib ketadi</li>
+                            <li>Batareya muammolari</li>
+                            <li>G'alati shovqinlar</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Diagnosis -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Tashxis</div>
+                    <div class="detail-value">
+                        <textarea placeholder="Tashxis qo'shish..."
+                                  style="width: 100%; min-height: 100px; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">Ventilyator changga to'lgan va normal ishlamayapti. Termal pasta almashtirilishi kerak. Batareya eskirgan va almashtirish kerak.</textarea>
+                    </div>
+                </div>
+
+                <!-- Parts Request -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Kerakli detallar</div>
+                    <div class="detail-value">
+                        <div class="parts-request">
+                            <div class="parts-list" id="partsList">
+                                <div class="part-item">
+                                    <div class="part-name">Ventilyator - Acer Aspire 5</div>
+                                    <div class="part-quantity">1</div>
+                                    <button class="part-remove">&times;</button>
+                                </div>
+                                <div class="part-item">
+                                    <div class="part-name">Termal pasta</div>
+                                    <div class="part-quantity">1</div>
+                                    <button class="part-remove">&times;</button>
+                                </div>
+                                <div class="part-item">
+                                    <div class="part-name">Batareya - Acer Aspire 5</div>
+                                    <div class="part-quantity">1</div>
+                                    <button class="part-remove">&times;</button>
+                                </div>
+                            </div>
+                            <div class="add-part">
+                                <select id="partSelect">
+                                    <option value="">Detal tanlang</option>
+                                    <option value="P001">Intel Core i5-10400</option>
+                                    <option value="R001">Kingston 8GB DDR4</option>
+                                    <option value="H001">Samsung 500GB SSD</option>
+                                    <option value="K001">Noutbuk klaviaturasi</option>
+                                </select>
+                                <input type="number" id="partQuantity" min="1" value="1">
+                                <button class="add-part-btn" onclick="addPart()">Qo'shish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repair Notes -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Ta'mirlash qaydlari</div>
+                    <div class="detail-value">
+                        <div class="repair-notes">
+                                <textarea placeholder="Ta'mirlash qaydlarini qo'shish..."
+                                          style="width: 100%; min-height: 100px; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">1. Ventilyator tozalandi va almashtirildi
+2. Termal pasta almashtirildi
+3. Yangi batareya o'rnatildi
+4. Tizim test qilindi - harorat normal, batareya to'g'ri ishlayapti</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repair Progress -->
+                <div class="detail-group detail-full">
+                    <div class="detail-label">Ta'mirlash jarayoni</div>
+                    <div class="detail-value">
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 60%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                            <span>0%</span>
+                            <span>60%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-parts" onclick="requestPartsForTask('1244')">Detallar so'rash</button>
+            <button class="btn btn-complete" onclick="completeTask('1244')">Tugatish</button>
+        </div>
+    </div>
+</div>
+
+<!-- Parts Request Modal -->
+<div class="modal" id="partsModal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2 class="modal-title">Detallar so'rovi</h2>
+            <button class="modal-close" id="closePartsModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="taskId">Vazifa ID</label>
+                <select id="taskId" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="1244">Vazifa #1244 - Noutbuk ta'mirlash</option>
+                    <option value="1240">Vazifa #1240 - Kompyuter ta'mirlash</option>
+                    <option value="1245">Vazifa #1245 - Printer ta'mirlash</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="partId">Detal</label>
+                <select id="partId" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="">Detal tanlang</option>
+                    <option value="P001">Intel Core i5-10400</option>
+                    <option value="P002">AMD Ryzen 5 5600X</option>
+                    <option value="R001">Kingston 8GB DDR4</option>
+                    <option value="R002">Crucial 16GB DDR4</option>
+                    <option value="H001">Samsung 500GB SSD</option>
+                    <option value="H002">WD 1TB HDD</option>
+                    <option value="V001">NVIDIA GTX 1650</option>
+                    <option value="M001">ASUS Prime B450M-A</option>
+                    <option value="D001">15.6" FHD IPS Ekran</option>
+                    <option value="K001">Noutbuk klaviaturasi</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="partQuantity">Miqdori</label>
+                <input type="number" id="partQuantityModal" min="1" value="1"
+                       style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div class="form-group">
+                <label for="partReason">Sabab</label>
+                <textarea id="partReason" placeholder="Detallar so'rash sababini kiriting..."
+                          style="width: 100%; min-height: 100px; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-parts" onclick="submitPartRequest()">So'rovni yuborish</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function () {
+            window.location.href = '/logout';
+        });
+    }
+    // Tab switching
+    const tabButtons = document.querySelectorAll('.sidebar-menu a');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked button
+            this.classList.add('active');
+
+            // Show corresponding content
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Task status tab switching
+    const taskTabButtons = document.querySelectorAll('[data-task-tab]');
+
+    taskTabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Remove active class from all buttons
+            taskTabButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Add active class to clicked button
+            this.classList.add('active');
+
+            // Filter table rows based on status (this would be implemented with real data)
+            const status = this.getAttribute('data-task-tab');
+            console.log(`Filtering by status: ${status}`);
+            // In a real application, you would filter the table rows here
+        });
+    });
+
+    // Task Modal functionality
+    const taskModal = document.getElementById('taskModal');
+    const closeTaskModal = document.getElementById('closeTaskModal');
+
+    function openTaskModal(id) {
+        taskModal.classList.add('show');
+        // In a real application, you would fetch the task details by ID here
+        console.log(`Opening task details for ID: ${id}`);
+        document.querySelector('.modal-title').textContent = `Vazifa #${id} - Tafsilotlar`;
+    }
+
+    closeTaskModal.addEventListener('click', function () {
+        taskModal.classList.remove('show');
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function (e) {
+        if (e.target === taskModal) {
+            taskModal.classList.remove('show');
+        }
+        if (e.target === partsModal) {
+            partsModal.classList.remove('show');
+        }
+    });
+
+    // Parts Modal functionality
+    const partsModal = document.getElementById('partsModal');
+    const closePartsModal = document.getElementById('closePartsModal');
+
+    function requestPart(partId) {
+        partsModal.classList.add('show');
+        // In a real application, you would pre-select the part in the dropdown
+        console.log(`Requesting part ID: ${partId}`);
+        document.getElementById('partId').value = partId;
+    }
+
+    function requestPartsForTask(taskId) {
+        partsModal.classList.add('show');
+        // In a real application, you would pre-select the task in the dropdown
+        console.log(`Requesting parts for task ID: ${taskId}`);
+        document.getElementById('taskId').value = taskId;
+    }
+
+    closePartsModal.addEventListener('click', function () {
+        partsModal.classList.remove('show');
+    });
+
+    function submitPartRequest() {
+        const taskId = document.getElementById('taskId').value;
+        const partId = document.getElementById('partId').value;
+        const quantity = document.getElementById('partQuantityModal').value;
+        const reason = document.getElementById('partReason').value;
+
+        // In a real application, you would send this data to the server
+        console.log(`Submitting part request: Task ID: ${taskId}, Part ID: ${partId}, Quantity: ${quantity}, Reason: ${reason}`);
+
+        alert('Detal so\'rovi muvaffaqiyatli yuborildi');
+        partsModal.classList.remove('show');
+    }
+
+    // Task actions
+    function startTask(id) {
+        // In a real application, you would send an API request to start the task
+        console.log(`Starting task ID: ${id}`);
+        alert(`Vazifa #${id} boshlandi`);
+    }
+
+    function completeTask(id) {
+        // In a real application, you would send an API request to complete the task
+        console.log(`Completing task ID: ${id}`);
+        alert(`Vazifa #${id} muvaffaqiyatli tugatildi`);
+        taskModal.classList.remove('show');
+    }
+
+    // Add part to the list
+    function addPart() {
+        const partSelect = document.getElementById('partSelect');
+        const partQuantity = document.getElementById('partQuantity');
+
+        if (partSelect.value) {
+            const partName = partSelect.options[partSelect.selectedIndex].text;
+            const quantity = partQuantity.value;
+
+            const partsList = document.getElementById('partsList');
+
+            const partItem = document.createElement('div');
+            partItem.className = 'part-item';
+
+            partItem.innerHTML = `
+                    <div class="part-name">${partName}</div>
+                    <div class="part-quantity">${quantity}</div>
+                    <button class="part-remove" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+            partsList.appendChild(partItem);
+
+            // Reset the form
+            partSelect.value = '';
+            partQuantity.value = 1;
+        }
+    }
+</script>
+</body>
+</html>

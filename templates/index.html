@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kompyuter Ustaxonasi</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .auth-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .register-btn {
+            background-color: #3498db;
+            color: white;
+            border: 1px solid #3498db;
+        }
+
+        .register-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-menu-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .user-menu-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .user-menu-content a:hover {
+            background-color: #f1f1f1;
+            color: #3498db;
+        }
+
+        .user-menu.active .user-menu-content {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #3498db;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background-color: white;
+            color: #3498db;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .hero-btn:hover {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-img {
+            height: 200px;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #3498db;
+        }
+
+        .service-content {
+            padding: 2rem;
+        }
+
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .service-content p {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .service-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 0;
+            background-color: #f9f9f9;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-img {
+            height: 400px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #3498db;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 0;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f1f1f1;
+            margin-right: 1rem;
+        }
+
+        .author-info h4 {
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .author-info p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background-color: #f9f9f9;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .contact-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span {
+            color: #3498db;
+        }
+
+        .footer-about p {
+            color: #bdc3c7;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links h3,
+        .footer-contact h3,
+        .footer-newsletter h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .footer-contact p {
+            color: #bdc3c7;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-contact p i {
+            margin-right: 0.5rem;
+            color: #3498db;
+        }
+
+        .footer-newsletter p {
+            color: #bdc3c7;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .newsletter-form button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #2980b9;
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #34495e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: #3498db;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-img {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2,
+            .about-text h2,
+            .contact-info h2 {
+                font-size: 2rem;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-buttons {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">Kompyuter<span>Ustaxonasi</span></a>
+                <button class="mobile-menu-btn">☰</button>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="/">Bosh sahifa</a></li>
+                        <li><a href="#services">Xizmatlar</a></li>
+                        <li><a href="#about">Biz haqimizda</a></li>
+                        <li><a href="#testimonials">Mijozlar fikri</a></li>
+                        <li><a href="#contact">Bog'lanish</a></li>
+                        <li><a href="/murojat">Murojat qoldirish</a></li>
+                    </ul>
+                </nav>
+                {% if user %}
+                <div class="user-menu">
+                    <button class="user-menu-btn">
+                        <div class="user-avatar">{{ user.first_name[0] }}</div>
+                        <span>{{ user.first_name }}</span>
+                    </button>
+                    <div class="user-menu-content">
+                        {% if user.role == "manager" %}
+                        <a href="/manager">Manager Dashboard</a>
+                        {% elif user.role == "mechanic" %}
+                        <a href="/mechanic">Texnik Dashboard</a>
+                        {% endif %}
+                        <a href="/profile">Profil</a>
+                        <a href="/logout">Chiqish</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="auth-buttons">
+                    <a href="/login" class="auth-btn login-btn">Kirish</a>
+                    <a href="/register" class="auth-btn register-btn">Ro'yxatdan o'tish</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Kompyuter ta'mirlash xizmatlari</h1>
+            <p>Noutbuk, kompyuter va boshqa elektron qurilmalarni professional darajada ta'mirlash xizmatlarini taqdim etamiz.</p>
+            <a href="/murojat" class="hero-btn">Murojat qoldirish</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Bizning xizmatlar</h2>
+                <p>Biz taqdim etadigan yuqori sifatli kompyuter ta'mirlash xizmatlari</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">💻</div>
+                    <div class="service-content">
+                        <h3>Noutbuk ta'mirlash</h3>
+                        <p>Barcha turdagi noutbuklarni ta'mirlash, tozalash va yangilash xizmatlari.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">🖥️</div>
+                    <div class="service-content">
+                        <h3>Kompyuter ta'mirlash</h3>
+                        <p>Stol kompyuterlarini ta'mirlash, yangilash va optimallashtirishni taklif qilamiz.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">🖨️</div>
+                    <div class="service-content">
+                        <h3>Printer ta'mirlash</h3>
+                        <p>Barcha turdagi printerlarni ta'mirlash va texnik xizmat ko'rsatish.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">📱</div>
+                    <div class="service-content">
+                        <h3>Mobil qurilmalar</h3>
+                        <p>Smartfon va planshetlarni ta'mirlash xizmatlari.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">🔒</div>
+                    <div class="service-content">
+                        <h3>Ma'lumotlarni tiklash</h3>
+                        <p>Yo'qolgan ma'lumotlarni tiklash va ma'lumotlar zaxirasini yaratish.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">🛠️</div>
+                    <div class="service-content">
+                        <h3>Dasturiy ta'minot</h3>
+                        <p>Operatsion tizimlarni o'rnatish va dasturiy ta'minotni yangilash.</p>
+                        <a href="#" class="service-btn">Batafsil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-img">🏢</div>
+                <div class="about-text">
+                    <h2>Biz haqimizda</h2>
+                    <p>Kompyuter Ustaxonasi 2010 yildan beri mijozlarga yuqori sifatli kompyuter ta'mirlash xizmatlarini taqdim etib kelmoqda. Bizning jamoamiz tajribali mutaxassislardan iborat bo'lib, ular har qanday murakkablikdagi muammolarni hal qilishga qodir.</p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <span>Tajribali mutaxassislar</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <span>Tez va sifatli xizmat</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <span>Arzon narxlar</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <span>Kafolat bilan</span>
+                        </div>
+                    </div>
+                    <p>Bizning maqsadimiz - mijozlarimizga eng yaxshi xizmatni taqdim etish va ularning ishonchini oqlash.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Mijozlar fikri</h2>
+                <p>Bizning xizmatlarimizdan foydalangan mijozlarning fikrlari</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Noutbugim juda qizib ketayotgan edi. Kompyuter Ustaxonasiga murojaat qildim va ular muammoni tez hal qilishdi. Endi noutbugim yangiday ishlayapti. Juda ham minnatdorman!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img"></div>
+                        <div class="author-info">
+                            <h4>Aziz Karimov</h4>
+                            <p>Toshkent</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Kompyuterim ishdan chiqdi va muhim ma'lumotlarim bor edi. Kompyuter Ustaxonasi nafaqat kompyuterni ta'mirladi, balki barcha ma'lumotlarimni ham saqlab qoldi. Ajoyib xizmat!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img"></div>
+                        <div class="author-info">
+                            <h4>Malika Saidova</h4>
+                            <p>Samarqand</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Printerim ishlamay qoldi. Kompyuter Ustaxonasiga murojaat qildim va ular bir kunda muammoni hal qilishdi. Narxi ham juda arzon. Tavsiya qilaman!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img"></div>
+                        <div class="author-info">
+                            <h4>Bobur Aliyev</h4>
+                            <p>Buxoro</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Bog'lanish</h2>
+                <p>Savollaringiz bormi? Biz bilan bog'laning</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Biz bilan bog'laning</h2>
+                    <p>Savollaringiz yoki takliflaringiz bo'lsa, biz bilan bog'lanishingiz mumkin. Biz sizga tez orada javob beramiz.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <span>Toshkent sh., Amir Temur ko'chasi, 15-uy</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <span>+998 90 123 45 67</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <span>info@kompyuterustaxonasi.uz</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🕒</div>
+                            <span>Dushanba - Shanba: 9:00 - 18:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Ismingiz</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Mavzu</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Xabar</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Yuborish</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">Kompyuter<span>Ustaxonasi</span></div>
+                    <p>Kompyuter Ustaxonasi - kompyuter va boshqa elektron qurilmalarni ta'mirlash bo'yicha professional xizmatlar.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Foydali havolalar</h3>
+                    <ul>
+                        <li><a href="/">Bosh sahifa</a></li>
+                        <li><a href="#services">Xizmatlar</a></li>
+                        <li><a href="#about">Biz haqimizda</a></li>
+                        <li><a href="#testimonials">Mijozlar fikri</a></li>
+                        <li><a href="#contact">Bog'lanish</a></li>
+                        <li><a href="/murojat">Murojat qoldirish</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Bog'lanish</h3>
+                    <p><i>📍</i> Toshkent sh., Amir Temur ko'chasi, 15-uy</p>
+                    <p><i>📞</i> +998 90 123 45 67</p>
+                    <p><i>✉️</i> info@kompyuterustaxonasi.uz</p>
+                    <p><i>🕒</i> Dushanba - Shanba: 9:00 - 18:00</p>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Yangiliklar</h3>
+                    <p>Yangiliklar va maxsus takliflar haqida xabardor bo'lish uchun obuna bo'ling.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Email manzilingiz" required>
+                        <button type="submit">Obuna</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="#" class="social-link">FB</a>
+                    <a href="#" class="social-link">TG</a>
+                    <a href="#" class="social-link">IG</a>
+                    <a href="#" class="social-link">YT</a>
+                </div>
+                <p>&copy; 2023 Kompyuter Ustaxonasi. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // User menu toggle
+        const userMenuBtn = document.querySelector('.user-menu-btn');
+        if (userMenuBtn) {
+            userMenuBtn.addEventListener('click', () => {
+                document.querySelector('.user-menu').classList.toggle('active');
+            });
+        }
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.querySelector('.user-menu');
+            const userMenuBtn = document.querySelector('.user-menu-btn');
+
+            if (userMenu && userMenuBtn && !userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
